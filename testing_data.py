@@ -3,10 +3,6 @@ import cv2
 import random
 import numpy as np
 
-# ==================================================
-# SETTINGS
-# ==================================================
-
 IMAGES_PER_CLASS = 500
 CANVAS_SIZE = 64
 
@@ -20,9 +16,6 @@ OUTPUT_FOLDER = os.path.join(
     "test"
 )
 
-# ==================================================
-# CREATE OUTPUT FOLDERS
-# ==================================================
 
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
@@ -33,10 +26,6 @@ for label in range(100):
     )
 
 print("Folders Created!")
-
-# ==================================================
-# LOAD IMAGE PATHS
-# ==================================================
 
 digit_images = {}
 
@@ -56,9 +45,6 @@ for digit in range(10):
 
 print("Images Loaded!")
 
-# ==================================================
-# GENERATE DATASET
-# ==================================================
 
 for number in range(100):
 
@@ -74,10 +60,6 @@ for number in range(100):
 
     for i in range(IMAGES_PER_CLASS):
 
-        # --------------------------
-        # Pick random images
-        # --------------------------
-
         img1_path = random.choice(digit_images[tens])
         img2_path = random.choice(digit_images[ones])
 
@@ -91,36 +73,25 @@ for number in range(100):
             cv2.IMREAD_GRAYSCALE
         )
 
-        # Resize if needed
         img1 = cv2.resize(img1, (28, 28))
         img2 = cv2.resize(img2, (28, 28))
-
-        # --------------------------
-        # Create blank canvas
-        # --------------------------
 
         canvas = np.zeros(
             (CANVAS_SIZE, CANVAS_SIZE),
             dtype=np.uint8
         )
 
-        # Random gap
         gap = random.randint(2, 8)
 
         total_width = 28 + gap + 28
 
         start_x = (CANVAS_SIZE - total_width) // 2
 
-        # Random vertical shift
         y1 = random.randint(16, 22)
         y2 = random.randint(16, 22)
 
         x1 = start_x
         x2 = start_x + 28 + gap
-
-        # --------------------------
-        # Paste first digit
-        # --------------------------
 
         canvas[
             y1:y1+28,
@@ -133,10 +104,6 @@ for number in range(100):
             img1
         )
 
-        # --------------------------
-        # Paste second digit
-        # --------------------------
-
         canvas[
             y2:y2+28,
             x2:x2+28
@@ -148,9 +115,6 @@ for number in range(100):
             img2
         )
 
-        # --------------------------
-        # Save
-        # --------------------------
 
         filename = os.path.join(
             save_folder,

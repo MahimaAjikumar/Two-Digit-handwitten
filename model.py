@@ -7,21 +7,12 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.optimizers import Adam
 
-# =====================================
-# PATHS
-# =====================================
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 TRAIN_PATH = os.path.join(BASE_DIR, "dataset_2digit", "train")
 TEST_PATH = os.path.join(BASE_DIR, "dataset_2digit", "test")
 
 IMG_SIZE = 64
-
-# =====================================
-# LOAD TRAIN DATA
-# =====================================
-
 X_train = []
 y_train = []
 
@@ -52,10 +43,6 @@ for label in range(100):
 
 X_train = np.array(X_train).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
 y_train = np.array(y_train)
-
-# =====================================
-# LOAD TEST DATA
-# =====================================
 
 X_test = []
 y_test = []
@@ -88,19 +75,11 @@ for label in range(100):
 X_test = np.array(X_test).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
 y_test = np.array(y_test)
 
-# =====================================
-# ONE HOT ENCODING
-# =====================================
-
 y_train = to_categorical(y_train, 100)
 y_test = to_categorical(y_test, 100)
 
 print("Training Images :", len(X_train))
 print("Testing Images  :", len(X_test))
-
-# =====================================
-# CNN MODEL
-# =====================================
 
 model = Sequential()
 
@@ -120,20 +99,11 @@ model.add(Dense(256, activation="relu"))
 
 model.add(Dense(100, activation="softmax"))
 
-# =====================================
-# COMPILE
-# =====================================
-
 model.compile(
     optimizer=Adam(),
     loss="categorical_crossentropy",
     metrics=["accuracy"]
 )
-
-# =====================================
-# TRAIN
-# =====================================
-
 history = model.fit(
 
     X_train,
@@ -147,20 +117,10 @@ history = model.fit(
     shuffle=True
 )
 
-# =====================================
-# TEST
-# =====================================
 
 loss, accuracy = model.evaluate(X_test, y_test)
 
 print("\nAccuracy :", accuracy)
-# =====================================
-# SHOW SAMPLE PREDICTIONS
-# =====================================
-
-# =====================================
-# PREDICT ONE SAMPLE
-# =====================================
 
 index = 0    # Change this to test different images
 
@@ -174,10 +134,6 @@ print("-----------------")
 print("Predicted :", f"{predicted:02d}")
 print("Actual    :", f"{actual:02d}")
 
-
-# =====================================
-# SAVE MODEL
-# =====================================
 
 model.save("digit_2digit_model.keras")
 
